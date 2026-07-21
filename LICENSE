@@ -1,5 +1,5 @@
 Argus End-User License Agreement (EULA)
-Copyright (c) 2026 The Argus authors. All rights reserved.
+Copyright (c) 2026 CyTwist Ltd. All rights reserved.
 
 This is a proprietary, closed-source license. It is NOT an open-source license.
 By downloading, installing, or using Argus (the "Software"), you agree to these
@@ -15,7 +15,7 @@ terms.
      (a) sell, rent, sublicense, or otherwise redistribute the Software or make
          it available to third parties;
      (b) use the Software for commercial purposes, or to provide a service to
-         others, without a separate commercial license from the authors;
+         others, without a separate commercial license from CyTwist;
      (c) reverse engineer, decompile, disassemble, or attempt to derive the
          source code, except to the extent this restriction is prohibited by
          applicable law;
@@ -23,7 +23,7 @@ terms.
      (e) remove or alter any copyright, trademark, or other proprietary notices.
 
 3. OWNERSHIP
-   The Software is licensed, not sold. The authors retain all right, title, and
+   The Software is licensed, not sold. CyTwist Ltd retains all right, title, and
    interest in and to the Software, including all intellectual property rights.
    All rights not expressly granted here are reserved, including commercial and
    multi-host/enterprise use.
@@ -55,4 +55,4 @@ terms.
    This license terminates automatically if you breach any term. On termination
    you must stop using and delete all copies of the Software.
 
-For commercial, multi-host, or enterprise licensing, contact the authors.
+For commercial, multi-host, or enterprise licensing, contact CyTwist (licensing@cytwist.com).

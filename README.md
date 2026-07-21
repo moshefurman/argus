@@ -6,6 +6,8 @@
 
 ### Bridge the gap.
 
+<sub>by **CyTwist**</sub>
+
 **See what's actually happening on your machine.**
 
 A local, zero-cloud detection engine for Windows. It turns raw Sysmon telemetry
@@ -121,6 +123,6 @@ elevation you still get the full Sysmon-based malware detection.
 
 ## License
 
-Free for personal, non-commercial use under the **Argus End-User License
-Agreement** ([LICENSE](LICENSE)). Not open source. Commercial and multi-host use
-is reserved — reach out if you're interested.
+Argus is a **CyTwist** product. Free for personal, non-commercial use under the
+**Argus End-User License Agreement** ([LICENSE](LICENSE)) — © CyTwist Ltd. Not
+open source. Commercial and multi-host licensing is reserved; contact CyTwist.
