@@ -4,6 +4,8 @@
 
 # Argus
 
+### Bridge the gap.
+
 **See what's actually happening on your machine.**
 
 A local, zero-cloud detection engine for Windows. It turns raw Sysmon telemetry
