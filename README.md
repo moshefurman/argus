@@ -19,6 +19,14 @@ leaves your PC.
 [![Platform](assets/badge-platform.svg)](#requirements)
 [![License](assets/badge-license.svg)](LICENSE)
 
+<p align="center">
+  <a href="https://moshefurman.github.io/argus/demo.html">
+    <img src="assets/dashboard-preview.png" width="640" alt="Argus dashboard — the Overview screen" />
+  </a>
+  <br />
+  <sub><a href="https://moshefurman.github.io/argus/demo.html"><b>▶ Open the live interactive demo</b></a> &nbsp;·&nbsp; <i>Preview — shipping soon</i></sub>
+</p>
+
 </div>
 
 ---
