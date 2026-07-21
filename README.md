@@ -15,9 +15,9 @@ into a clear, visual story of what a threat did — which process spawned what,
 what it dropped, and where it called home. One binary. No account. Nothing
 leaves your PC.
 
-[![Release](https://img.shields.io/github/v/release/moshefurman/argus?color=37c6c0)](https://github.com/moshefurman/argus/releases/latest)
-[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-2f63b8)](#requirements)
-[![License](https://img.shields.io/badge/license-Free%20for%20personal%20use-8aa6ff)](LICENSE)
+[![Release](assets/badge-release.svg)](https://github.com/moshefurman/argus/releases/latest)
+[![Platform](assets/badge-platform.svg)](#requirements)
+[![License](assets/badge-license.svg)](LICENSE)
 
 </div>
 
