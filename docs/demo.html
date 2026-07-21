@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJBcmd1cyI+CiAgPHRpdGxlPkFyZ3VzPC90aXRsZT4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYXJndXMtZ3JhZCIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM4YWE2ZmYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjM2ZlMGNmIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjMGYxMTE1Ii8+CiAgPHBhdGggZD0iTTEyIDUwIFE1MCAyMiA4OCA1MCBRNTAgNzggMTIgNTAgWiIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9InVybCgjYXJndXMtZ3JhZCkiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjE2IiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjYXJndXMtZ3JhZCkiIHN0cm9rZS13aWR0aD0iMyIKICAgICAgICAgIHN0cm9rZS1kYXNoYXJyYXk9IjE0IDYuMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiB0cmFuc2Zvcm09InJvdGF0ZSgtOSA1MCA1MCkiLz4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI4IiBmaWxsPSJ1cmwoI2FyZ3VzLWdyYWQpIi8+CiAgPGNpcmNsZSBjeD0iNTQiIGN5PSI0NiIgcj0iMi40IiBmaWxsPSIjZjBmNWZmIi8+Cjwvc3ZnPgo=">
+<title>Argus by CyTwist — dashboard (preview)</title>
+<style>
+  :root{
+    --bg:#080b11; --surface:#101825; --surface2:#161f2e; --raised:#1e2837; --border:#2d3949; --border2:#43536e;
+    --text:#eff4fc; --muted:#8794a9; --faint:#5a6880;
+    --a1:#8aa6ff; --a2:#3fe0cf; --accent:#5ccdd6;
+    --crit:#ff4747; --high:#ff8e2e; --med:#ffcf37; --low:#37d97a; --info:#7e9bff; --beacon:#ff5a63;
+    --crit-bg:rgba(255,71,71,.15); --high-bg:rgba(255,142,46,.15); --med-bg:rgba(255,207,55,.14); --low-bg:rgba(55,217,122,.14);
+    --shadow:inset 0 1px 0 rgba(255,255,255,.045), 0 10px 26px -18px rgba(0,0,0,.85);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--text);overflow:hidden;
+    font:15px/1.5 "Segoe UI",system-ui,-apple-system,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"Cascadia Code",ui-monospace,"SF Mono",Consolas,monospace}
+  .lbl{font-family:"Cascadia Code",ui-monospace,Consolas,monospace;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:var(--faint);font-weight:600}
+
+  /* ===== app shell: vertical sidebar + full-height content ===== */
+  .app{display:flex;height:100vh}
+  .sidebar{width:214px;flex:none;display:flex;flex-direction:column;padding:18px 14px;
+    background:linear-gradient(180deg,#0f1620,#0b0f16);border-right:1px solid var(--border)}
+  .brand{display:flex;align-items:center;gap:10px;padding:4px 6px 2px}
+  .brand h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.03em}
+  .brand .slogan{display:block;color:#6b7589;font-size:11px;font-style:italic;margin:2px 0 0 8px}
+  .sidebar nav{display:flex;flex-direction:column;gap:3px;margin-top:22px}
+  .tab{display:flex;align-items:center;gap:11px;text-align:left;width:100%;background:transparent;border:1px solid transparent;
+    color:#9aa6bb;border-radius:9px;padding:9px 12px;cursor:pointer;font-size:14px;font-weight:600}
+  .tab:hover{color:#eff4fc;background:#141d2a}
+  .tab.on{background:#1b2636;color:#eef3fb;border-color:#38455f}
+  .tab .ic{width:16px;text-align:center;opacity:.9}
+  .tab .cnt{margin-left:auto;font-size:11px;font-weight:800;color:var(--crit);background:var(--crit-bg);border:1px solid rgba(255,71,71,.4);border-radius:99px;padding:1px 7px}
+  .sidebar .foot{margin-top:auto;padding:8px 8px 2px;border-top:1px solid var(--border)}
+  .live{display:inline-flex;align-items:center;gap:7px;color:var(--low);font-size:12px;font-weight:700}
+  .live .dot{width:8px;height:8px;border-radius:50%;background:var(--low);box-shadow:0 0 0 3px rgba(55,217,122,.18)}
+  .byline{display:block;color:#5b6573;font-size:11px;letter-spacing:.04em;margin-top:9px}
+  .byline b{color:#8aa6ff;font-weight:700}
+
+  .content{flex:1;min-width:0;height:100vh}
+  section.view{height:100vh;padding:20px 24px;overflow:auto}
+  section#overview{overflow:hidden;display:flex;flex-direction:column;gap:13px}
+  section.view.hidden{display:none !important}
+  .viewhead{display:flex;align-items:baseline;gap:12px;flex:none}
+  .viewhead h2{font-size:20px;margin:0;font-weight:800;letter-spacing:-.015em}
+  .viewhead .sub{color:var(--muted);font-size:13px}
+
+  /* ===== KPI tiles ===== */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:none}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:13px 15px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .kpi .v{font-family:"Cascadia Code",ui-monospace,Consolas,monospace;font-size:32px;font-weight:700;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin-top:7px}
+  .kpi .d{font-size:11.5px;color:var(--muted);margin-top:6px}
+  .kpi.attn{background:linear-gradient(180deg,var(--crit-bg),transparent 70%),var(--surface);border-color:rgba(255,71,71,.4)}
+  .kpi.attn .v{color:var(--crit)}
+  .spark{position:absolute;right:11px;bottom:11px;opacity:.75}
+  .up{color:var(--low)}
+
+  /* ===== overview grid fills remaining height ===== */
+  .ovgrid{flex:1;min-height:0;display:grid;grid-template-columns:1.5fr 1fr;gap:12px}
+  .ovcol{display:flex;flex-direction:column;gap:12px;min-height:0}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:0}
+  .panel.grow{flex:1}
+  .panel h3{margin:0 0 12px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:space-between;flex:none}
+  .panel h3 .mini{font-size:11px;color:var(--muted);font-weight:600}
+  .panel .scroll{overflow:auto;min-height:0}
+
+  /* severity bars */
+  .sev{display:flex;flex-direction:column;gap:10px}
+  .sevrow{display:grid;grid-template-columns:70px 1fr 30px;align-items:center;gap:11px}
+  .sevrow .name{font-size:12.5px;font-weight:700}
+  .track{height:8px;background:#0b111b;border:1px solid var(--border);border-radius:99px;overflow:hidden}
+  .track > i{display:block;height:100%;border-radius:99px}
+  .sevrow .n{text-align:right;font-variant-numeric:tabular-nums;font-weight:800;font-size:13px;font-family:"Cascadia Code",monospace}
+  .c-crit{color:var(--crit)} .c-high{color:var(--high)} .c-med{color:var(--med)} .c-low{color:var(--low)}
+  .b-crit{background:var(--crit)} .b-high{background:var(--high)} .b-med{background:var(--med)} .b-low{background:var(--low)}
+
+  /* live radar */
+  .radarrow{flex:1;min-height:0;display:flex;gap:30px;align-items:center;justify-content:center;padding:4px 0}
+  .radar{position:relative;height:100%;aspect-ratio:1;max-height:330px;flex:none;cursor:crosshair;border-radius:50%;overflow:hidden;
+    background:radial-gradient(circle at center,#0e1a26,#0a0f17 72%);border:1px solid var(--border2);
+    box-shadow:inset 0 0 40px rgba(92,205,214,.06)}
+  .radar .rings{position:absolute;inset:0;border-radius:50%;
+    background:
+      radial-gradient(circle,transparent 0 32.5%,rgba(92,205,214,.16) 32.5% 33%,transparent 33%),
+      radial-gradient(circle,transparent 0 65.5%,rgba(92,205,214,.13) 65.5% 66%,transparent 66%),
+      radial-gradient(circle,transparent 0 99%,rgba(92,205,214,.10) 99% 100%,transparent 100%),
+      linear-gradient(rgba(92,205,214,.10),rgba(92,205,214,.10)) center/100% 1px no-repeat,
+      linear-gradient(rgba(92,205,214,.10),rgba(92,205,214,.10)) center/1px 100% no-repeat}
+  .radar .sweep{position:absolute;inset:0;border-radius:50%;transform-origin:center;
+    background:conic-gradient(from 0deg,rgba(92,205,214,.42),rgba(92,205,214,.05) 32%,transparent 45%);
+    animation:sweep 3.8s linear infinite}
+  .radar .core{position:absolute;top:50%;left:50%;width:7px;height:7px;border-radius:50%;transform:translate(-50%,-50%);background:var(--a2);box-shadow:0 0 10px var(--a2)}
+  .blip{position:absolute;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%);background:currentColor;box-shadow:0 0 9px currentColor;cursor:pointer;transition:transform .1s;z-index:3}
+  .blip:hover{transform:translate(-50%,-50%) scale(1.6)}
+  .blip.crit{color:var(--crit)} .blip.high{color:var(--high)} .blip.med{color:var(--med)} .blip.low{color:var(--low)}
+  .blip.pulse::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1px solid currentColor;animation:ping 2s ease-out infinite}
+  @keyframes sweep{to{transform:rotate(360deg)}}
+  @keyframes ping{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+  @media(prefers-reduced-motion:reduce){.radar .sweep{animation:none;background:conic-gradient(from 0deg,rgba(92,205,214,.28),transparent 45%)}.blip.pulse::after{animation:none}}
+  .ringlab{position:absolute;left:50%;transform:translateX(-50%);color:var(--faint);font-family:"Cascadia Code",ui-monospace,Consolas,monospace;font-size:9px;letter-spacing:.05em;pointer-events:none;text-shadow:0 0 5px #0a0f17}
+  .radarlegend{flex:none;width:184px;display:flex;flex-direction:column;gap:11px}
+  .rl{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:7px;padding:3px 7px;margin:-3px -7px;transition:background .1s}
+  .rl:not(.total):hover{background:var(--surface2)}
+  .rl .dot{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 6px currentColor}
+  .rl b{margin-left:auto;font-family:"Cascadia Code",ui-monospace,Consolas,monospace;font-weight:800;font-variant-numeric:tabular-nums;font-size:16px}
+  .rl.crit{color:#e7c6c6} .rl.crit .dot{background:var(--crit);color:var(--crit)} .rl.crit b{color:var(--crit)}
+  .rl.high{color:#e7d6c1} .rl.high .dot{background:var(--high);color:var(--high)} .rl.high b{color:var(--high)}
+  .rl.med{color:#e5dcbb} .rl.med .dot{background:var(--med);color:var(--med)} .rl.med b{color:var(--med)}
+  .rl.low{color:#c3e3cf} .rl.low .dot{background:var(--low);color:var(--low)} .rl.low b{color:var(--low)}
+  .rl.total{margin-top:3px;padding-top:11px;border-top:1px solid var(--border);color:var(--faint);font-size:12.5px;font-weight:600}
+  .rl.total b{color:var(--text);font-size:15px}
+
+  /* sensors */
+  .sensor{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+  .sensor:last-child{border-bottom:none}
+  .sensor .st{margin-left:auto;font-size:11px;font-weight:700;color:var(--low);display:inline-flex;align-items:center;gap:6px}
+  .sensor .st .d{width:7px;height:7px;border-radius:50%;background:var(--low)}
+  .sensor .nm{font-weight:700;font-size:13px} .sensor .meta{color:var(--faint);font-size:11px}
+
+  /* ===== detection rows (short + drill-down) ===== */
+  .list{display:flex;flex-direction:column;gap:9px}
+  .det{display:grid;grid-template-columns:5px 1fr auto;background:var(--surface);border:1px solid var(--border);
+    border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color .1s,background .1s;box-shadow:var(--shadow)}
+  .det:hover{border-color:var(--border2);background:var(--surface2)}
+  .det.open{border-color:#4a6bd0}
+  .stripe.crit{background:var(--crit)} .stripe.high{background:var(--high)} .stripe.med{background:var(--med)} .stripe.low{background:var(--low)}
+  .det .body{padding:12px 15px;min-width:0}
+  .det .toprow{display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap}
+  .det .title{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .det .meta{color:var(--muted);font-size:13px}
+  .det .meta .mono{color:#c8d3e6;font-weight:600}
+  .pill{font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;letter-spacing:.04em;text-transform:uppercase}
+  .pill.crit{color:var(--crit);background:var(--crit-bg);border:1px solid rgba(255,71,71,.4)}
+  .pill.high{color:var(--high);background:var(--high-bg);border:1px solid rgba(255,142,46,.4)}
+  .pill.med{color:var(--med);background:var(--med-bg);border:1px solid rgba(255,207,55,.4)}
+  .pill.low{color:var(--low);background:var(--low-bg);border:1px solid rgba(55,217,122,.4)}
+  .status{font-size:9.5px;font-weight:800;padding:2px 8px;border-radius:99px;letter-spacing:.05em;text-transform:uppercase;border:1px solid}
+  .status.new{color:#7e9bff;background:rgba(126,155,255,.14);border-color:rgba(126,155,255,.45)}
+  .status.inv{color:var(--med);background:var(--med-bg);border-color:rgba(255,207,55,.45)}
+  .status.res{color:var(--low);background:var(--low-bg);border-color:rgba(55,217,122,.45)}
+  .status.fp{color:var(--faint);background:#141d2a;border-color:var(--border)}
+  .det .side{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;padding:12px 15px 12px 10px;border-left:1px solid var(--border);gap:3px;min-width:90px}
+  .det .score{font-family:"Cascadia Code",ui-monospace,Consolas,monospace;font-size:30px;font-weight:700;line-height:1;letter-spacing:-.03em}
+  .det .score.crit{color:var(--crit)} .det .score.high{color:var(--high)} .det .score.med{color:var(--med)} .det .score.low{color:var(--low)}
+  .det .when{color:var(--faint);font-size:11.5px;white-space:nowrap}
+  .det .chev{color:var(--faint);font-size:16px;transition:transform .15s}
+  .det.open .chev{transform:rotate(90deg);color:var(--accent)}
+  .drill{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+  .det.open .drill{display:block}
+  .chain{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:8px 0 12px}
+  .cnode{font-family:"Cascadia Code",ui-monospace,Consolas,monospace;font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:7px;background:var(--raised);border:1px solid var(--border2);color:#cdd8ea}
+  .cnode.flag{border-color:#7a3b37;background:rgba(122,46,46,.25);color:#ffcfcc}
+  .cnode.ext{border-color:#1f6b4a;background:rgba(31,107,74,.22);color:#96e6bf}
+  .carr{color:var(--faint);font-weight:700}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:#1a2433;border:1px solid var(--border);color:#aeb9cc}
+  .chip.tag{background:#1e2c48;border-color:#33507f;color:#cfe0ff}
+  .chip.net{color:#8fe6b6;border-color:#1f6b4a;background:rgba(31,107,74,.2)}
+  .chip.cred{color:#e3b8ff;border-color:#5a3f7a;background:rgba(90,63,122,.22)}
+  .actions{display:flex;gap:6px;margin-top:11px}
+  .act{font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:7px;border:1px solid var(--border2);background:#1b2636;color:#c4d0e4;cursor:pointer}
+  .act:hover{background:#243149;color:#fff}
+  .act.res{border-color:#1f6b4a;color:#8fe6b6}
+  .act.fp{color:var(--faint)}
+  .assignee{margin-left:auto;color:var(--faint);font-size:11.5px;align-self:center}
+  .opentree{margin-top:12px;font-size:12.5px;font-weight:700;color:var(--accent);cursor:pointer;background:none;border:none;padding:0}
+
+  /* filter bar */
+  .filterbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .filterbar .div{width:1px;height:20px;background:var(--border);margin:0 4px}
+  .fchip{font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer}
+  .fchip.on{background:#1b2636;color:#eef3fb;border-color:#4a6bd0}
+  .fchip .cnt{color:var(--faint);font-weight:700;margin-left:5px}
+
+  /* timeline */
+  .tl{position:relative;margin:6px 0 0 10px;padding-left:28px;border-left:2px solid var(--border)}
+  .tlday{margin:20px 0 10px;font-weight:800;font-size:13px;color:#c4d0e4}
+  .tlday:first-child{margin-top:4px}
+  .tli{position:relative;display:flex;align-items:center;gap:13px;padding:10px 0;cursor:pointer}
+  .tli::before{content:'';position:absolute;left:-35px;top:50%;transform:translateY(-50%);width:11px;height:11px;border-radius:50%;box-shadow:0 0 0 4px var(--bg)}
+  .tli.crit::before{background:var(--crit)} .tli.high::before{background:var(--high)} .tli.med::before{background:var(--med)} .tli.low::before{background:var(--low)}
+  .tli .time{font-family:"Cascadia Code",ui-monospace,Consolas,monospace;font-size:12px;color:var(--muted);min-width:46px}
+  .tli .ttl{font-weight:600;font-size:14px} .tli:hover .ttl{color:#fff}
+  .tli .tmeta{color:var(--faint);font-size:12px} .tli .tspacer{flex:1}
+  .note{background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:13px 16px;color:var(--muted);font-size:13px;margin-top:16px}
+  .note b{color:var(--text)}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- ===== vertical sidebar ===== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8aa6ff"/><stop offset="1" stop-color="#3fe0cf"/></linearGradient></defs>
+        <path d="M10 50 Q50 22 90 50 Q50 78 10 50 Z" fill="none" stroke="url(#lg)" stroke-width="6" stroke-linejoin="round"/>
+        <circle cx="50" cy="50" r="16" fill="none" stroke="url(#lg)" stroke-width="3" stroke-dasharray="14 6.1" stroke-linecap="round" transform="rotate(-9 50 50)"/>
+        <circle cx="50" cy="50" r="8" fill="url(#lg)"/><circle cx="54" cy="46" r="2.4" fill="#f0f5ff"/>
+      </svg>
+      <div><h1>Argus</h1></div>
+    </div>
+    <span class="brand slogan" style="margin:2px 0 0 46px;font-style:italic;color:#6b7589;font-size:11px">bridge the gap</span>
+    <nav>
+      <button class="tab on" onclick="show('overview',this)"><span class="ic">▦</span>Overview</button>
+      <button class="tab" onclick="show('detections',this)"><span class="ic">◆</span>Detections<span class="cnt">3</span></button>
+      <button class="tab" onclick="show('timeline',this)"><span class="ic">◷</span>Timeline</button>
+      <button class="tab" onclick="show('cases',this)"><span class="ic">⛓</span>Cases</button>
+      <button class="tab" onclick="show('rules',this)"><span class="ic">❯</span>Rules</button>
+    </nav>
+    <div class="foot">
+      <span class="live"><span class="dot"></span>live · Sysmon</span>
+      <span class="byline">by <b>CyTwist</b></span>
+    </div>
+  </aside>
+
+  <!-- ===== content ===== -->
+  <div class="content">
+    <!-- OVERVIEW — fits the screen, no scroll -->
+    <section id="overview" class="view">
+      <div class="viewhead"><h2>Overview</h2><span class="sub">WORKSTATION-01 · last 24 h · updated 4s ago</span></div>
+      <div class="kpis">
+        <div class="kpi"><p class="lbl">Detections</p><div class="v">37</div><p class="d"><span class="up">▲ 6</span> vs. yesterday</p>
+          <svg class="spark" width="60" height="24"><polyline points="0,18 10,16 20,19 30,11 40,13 50,6 60,8" fill="none" stroke="#5ccdd6" stroke-width="2"/></svg></div>
+        <div class="kpi attn"><p class="lbl">Needs attention</p><div class="v">3</div><p class="d">critical / high · unreviewed</p></div>
+        <div class="kpi"><p class="lbl">Hosts monitored</p><div class="v">1</div><p class="d">Sysmon · Defender · Security</p></div>
+        <div class="kpi"><p class="lbl">Last detection</p><div class="v" style="font-size:23px">2 min</div><p class="d">credential-theft-lsass</p></div>
+      </div>
+      <div class="ovgrid">
+        <div class="ovcol">
+          <div class="panel">
+            <h3>By severity <span class="mini">37 total</span></h3>
+            <div class="sev">
+              <div class="sevrow"><span class="name c-crit">Critical</span><div class="track"><i class="b-crit" style="width:14%"></i></div><span class="n c-crit">5</span></div>
+              <div class="sevrow"><span class="name c-high">High</span><div class="track"><i class="b-high" style="width:32%"></i></div><span class="n c-high">12</span></div>
+              <div class="sevrow"><span class="name c-med">Medium</span><div class="track"><i class="b-med" style="width:41%"></i></div><span class="n c-med">15</span></div>
+              <div class="sevrow"><span class="name c-low">Low</span><div class="track"><i class="b-low" style="width:13%"></i></div><span class="n c-low">5</span></div>
+            </div>
+          </div>
+          <div class="panel grow">
+            <h3>Live radar <span class="mini">recency × severity</span></h3>
+            <div class="radarrow">
+              <div class="radar" onclick="show('timeline',document.querySelectorAll('.tab')[2])" title="Open timeline">
+                <div class="rings"></div>
+                <div class="sweep"></div>
+                <div class="core"></div>
+                <span class="ringlab" style="top:1.5%">24h</span>
+                <span class="ringlab" style="top:18%">6h</span>
+                <span class="ringlab" style="top:34.5%">1h</span>
+                <span class="blip crit pulse" style="top:44%;left:57%" onclick="event.stopPropagation();openDet(this)" title="Critical · Staged credential theft — LSASS · 2 min ago"></span>
+                <span class="blip high pulse" style="top:41%;left:40%" onclick="event.stopPropagation();openDet(this)" title="High · Office → PowerShell beacon · 18 min ago"></span>
+                <span class="blip high" style="top:62%;left:46%" onclick="event.stopPropagation();openDet(this)" title="High · Kerberoasting · 1 h ago"></span>
+                <span class="blip med" style="top:53%;left:70%" onclick="event.stopPropagation();openDet(this)" title="Medium · Script dropper chain · 3 h ago"></span>
+                <span class="blip med" style="top:69%;left:37%" onclick="event.stopPropagation();openDet(this)" title="Medium · Scheduled-task beacon · 6 h ago"></span>
+                <span class="blip low" style="top:74%;left:63%" onclick="event.stopPropagation();openDet(this)" title="Low · LOLBin network from regsvr32 · 5 h ago"></span>
+              </div>
+              <div class="radarlegend">
+                <div class="rl crit" onclick="openDet(this)"><span class="dot"></span>Critical<b>5</b></div>
+                <div class="rl high" onclick="openDet(this)"><span class="dot"></span>High<b>12</b></div>
+                <div class="rl med" onclick="openDet(this)"><span class="dot"></span>Medium<b>15</b></div>
+                <div class="rl low" onclick="openDet(this)"><span class="dot"></span>Low<b>5</b></div>
+                <div class="rl total">last 24 h · <b>37</b> total · ring = age</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ovcol">
+          <div class="panel grow">
+            <h3>Needs attention <span class="mini">top unreviewed</span></h3>
+            <div class="scroll">
+              <div class="list">
+                <div class="det" onclick="show('detections',document.querySelectorAll('.tab')[1])">
+                  <div class="stripe crit"></div>
+                  <div class="body"><div class="toprow"><span class="pill crit">Critical</span><span class="title" style="font-size:14px">Credential theft — LSASS</span></div><div class="meta"><span class="mono">rundll32.exe</span> · j.doe</div></div>
+                  <div class="side"><div class="score crit" style="font-size:24px">92</div></div>
+                </div>
+                <div class="det">
+                  <div class="stripe high"></div>
+                  <div class="body"><div class="toprow"><span class="pill high">High</span><span class="title" style="font-size:14px">Office → PowerShell beacon</span></div><div class="meta"><span class="mono">powershell.exe</span> · a.smith</div></div>
+                  <div class="side"><div class="score high" style="font-size:24px">78</div></div>
+                </div>
+                <div class="det">
+                  <div class="stripe high"></div>
+                  <div class="body"><div class="toprow"><span class="pill high">High</span><span class="title" style="font-size:14px">Kerberoasting</span></div><div class="meta">Security log · DC-01</div></div>
+                  <div class="side"><div class="score high" style="font-size:24px">84</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Sensors</h3>
+            <div class="sensor"><div><div class="nm">Sysmon</div><div class="meta">EID 1·3·7·10·11·12-14·22</div></div><span class="st"><span class="d"></span>live</span></div>
+            <div class="sensor"><div><div class="nm">Defender</div><div class="meta">AV fusion on</div></div><span class="st"><span class="d"></span>live</span></div>
+            <div class="sensor"><div><div class="nm">Security log</div><div class="meta">auth · Kerberos</div></div><span class="st"><span class="d"></span>live</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DETECTIONS — scrolls internally -->
+    <section id="detections" class="view hidden">
+      <div class="viewhead"><h2>Detections</h2><span class="sub">37 detections</span></div>
+      <div class="filterbar">
+        <span class="lbl">Severity</span>
+        <span class="fchip on">All</span><span class="fchip">Critical<span class="cnt">5</span></span><span class="fchip">High<span class="cnt">12</span></span><span class="fchip">Medium<span class="cnt">15</span></span><span class="fchip">Low<span class="cnt">5</span></span>
+        <span class="div"></span>
+        <span class="lbl">Status</span>
+        <span class="fchip on">New<span class="cnt">28</span></span><span class="fchip">Investigating<span class="cnt">2</span></span><span class="fchip">Resolved<span class="cnt">7</span></span>
+      </div>
+      <div class="list">
+        <div class="det open" onclick="toggle(this)">
+          <div class="stripe crit"></div>
+          <div class="body">
+            <div class="toprow"><span class="pill crit">Critical</span><span class="status new">New</span><span class="title">Staged credential theft — LSASS</span></div>
+            <div class="meta"><span class="mono">rundll32.exe</span> · WORKSTATION-01 · j.doe</div>
+            <div class="drill" onclick="event.stopPropagation()">
+              <span class="lbl">Attack chain</span>
+              <div class="chain"><span class="cnode">cmd.exe</span><span class="carr">→</span><span class="cnode flag">rundll32.exe</span><span class="carr">→</span><span class="cnode ext">lsass read</span></div>
+              <div class="chips"><span class="chip tag">pattern12</span><span class="chip cred">lsass read</span><span class="chip cred">reflective dumper</span><span class="chip net">→ external</span></div>
+              <div class="actions"><button class="act">◎ Investigate</button><button class="act res">✔ Resolve</button><button class="act fp">⊘ False positive</button><span class="assignee">unassigned</span></div>
+              <button class="opentree">Open full process tree →</button>
+            </div>
+          </div>
+          <div class="side"><div class="score crit">92</div><div class="when">2 min ago</div><span class="chev">›</span></div>
+        </div>
+        <div class="det" onclick="toggle(this)">
+          <div class="stripe high"></div>
+          <div class="body"><div class="toprow"><span class="pill high">High</span><span class="status inv">Investigating</span><span class="title">External beacon from Office lineage</span></div><div class="meta"><span class="mono">powershell.exe</span> · ← winword.exe · WS-FINANCE-02 · a.smith</div></div>
+          <div class="side"><div class="score high">78</div><div class="when">18 min ago</div><span class="chev">›</span></div>
+        </div>
+        <div class="det" onclick="toggle(this)">
+          <div class="stripe high"></div>
+          <div class="body"><div class="toprow"><span class="pill high">High</span><span class="status new">New</span><span class="title">Kerberoasting — RC4 service tickets</span></div><div class="meta">Security log · src 10.0.0.44 · DC-01</div></div>
+          <div class="side"><div class="score high">84</div><div class="when">1 h ago</div><span class="chev">›</span></div>
+        </div>
+        <div class="det" onclick="toggle(this)">
+          <div class="stripe med"></div>
+          <div class="body"><div class="toprow"><span class="pill med">Medium</span><span class="status res">Resolved</span><span class="title">All-script multi-type dropper chain</span></div><div class="meta"><span class="mono">wscript.exe</span> · WORKSTATION-01 · j.doe</div></div>
+          <div class="side"><div class="score med">70</div><div class="when">3 h ago</div><span class="chev">›</span></div>
+        </div>
+        <div class="det" onclick="toggle(this)">
+          <div class="stripe low"></div>
+          <div class="body"><div class="toprow"><span class="pill low">Low</span><span class="status fp">False positive</span><span class="title">LOLBin network from regsvr32</span></div><div class="meta"><span class="mono">regsvr32.exe</span> · WS-FINANCE-02 · a.smith</div></div>
+          <div class="side"><div class="score low">58</div><div class="when">5 h ago</div><span class="chev">›</span></div>
+        </div>
+      </div>
+      <div class="note"><b>Short by default, deep on demand:</b> each row is one scannable line. Click to drill down — attack chain, tags, triage actions, or open the full process tree.</div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section id="timeline" class="view hidden">
+      <div class="viewhead"><h2>Timeline</h2><span class="sub">chronological — the story as it unfolded</span></div>
+      <div class="tl">
+        <div class="tlday">Today</div>
+        <div class="tli crit"><span class="time">14:32</span><span class="ttl">Staged credential theft — LSASS</span><span class="tmeta">rundll32.exe · WORKSTATION-01</span><span class="tspacer"></span><span class="status new">New</span></div>
+        <div class="tli high"><span class="time">14:14</span><span class="ttl">External beacon from Office lineage</span><span class="tmeta">powershell.exe · WS-FINANCE-02</span><span class="tspacer"></span><span class="status inv">Investigating</span></div>
+        <div class="tli high"><span class="time">13:20</span><span class="ttl">Kerberoasting — RC4 service tickets</span><span class="tmeta">Security log · DC-01</span><span class="tspacer"></span><span class="status new">New</span></div>
+        <div class="tli low"><span class="time">11:07</span><span class="ttl">LOLBin network from regsvr32</span><span class="tmeta">regsvr32.exe · WS-FINANCE-02</span><span class="tspacer"></span><span class="status fp">False positive</span></div>
+        <div class="tlday">Yesterday</div>
+        <div class="tli med"><span class="time">22:05</span><span class="ttl">All-script multi-type dropper chain</span><span class="tmeta">wscript.exe · WORKSTATION-01</span><span class="tspacer"></span><span class="status res">Resolved</span></div>
+        <div class="tli high"><span class="time">18:41</span><span class="ttl">Password spray — 12 failed logons</span><span class="tmeta">Security log · 5 accounts</span><span class="tspacer"></span><span class="status res">Resolved</span></div>
+      </div>
+    </section>
+
+    <section id="cases" class="view hidden"><div class="viewhead"><h2>Cases</h2><span class="sub">lolbin chains — unchanged</span></div><div class="note">Existing MITRE timeline view, unchanged.</div></section>
+    <section id="rules" class="view hidden"><div class="viewhead"><h2>Rules</h2><span class="sub">in-browser editor — unchanged</span></div><div class="note">Existing rules editor (validate + hot-reload), unchanged.</div></section>
+  </div>
+</div>
+
+<script>
+  function show(id, btn){
+    for(const s of document.querySelectorAll('section.view')) s.classList.toggle('hidden', s.id!==id);
+    for(const t of document.querySelectorAll('.tab')) t.classList.remove('on');
+    (btn.closest('.tab')||btn).classList.add('on');
+    const c=document.querySelector('.content'); if(c) c.scrollTop=0;
+  }
+  function toggle(el){ el.classList.toggle('open'); }
+  function openDet(){ show('detections', document.querySelectorAll('.tab')[1]); }
+</script>
+
+</body>
+</html>
