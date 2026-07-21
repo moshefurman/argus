@@ -1,0 +1,4 @@
+# This public repo holds docs + installer + releases only — no build artifacts.
+*.zip
+*.exe
+/data/

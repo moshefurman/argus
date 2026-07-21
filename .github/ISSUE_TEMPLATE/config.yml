@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Questions & Discussion
+    url: https://github.com/moshefurman/argus/discussions
+    about: Ask questions, share setups, and discuss detection ideas here.
+  - name: 🔒 Report a security vulnerability
+    url: https://github.com/moshefurman/argus/blob/main/SECURITY.md
+    about: Please report vulnerabilities privately, not as a public issue.
