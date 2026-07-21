@@ -57,6 +57,32 @@ Prefer to do it by hand? Grab the latest `argus-windows-amd64.zip` from
   leaves the machine.
 - ⚡ **Single binary.** One `argus.exe` — no runtime, no dependencies.
 
+## The CyTwist protection layer
+
+Under the hood, Argus runs **CyTwist's behavioral detection engine** — the same
+top-down approach used to protect enterprises, brought down to a single machine.
+It doesn't just flag isolated events; it **correlates your machine's activity
+into an attack story** and reconstructs the real process tree behind it. You
+don't get a cryptic alert — you get *what happened, and how*.
+
+It's built to catch the behaviors that signature scanners miss:
+
+- **Droppers & write-then-execute** — a file created and then run or invoked
+  within the same process lineage.
+- **Fileless / in-memory scripting** — PowerShell or scripting engines loaded
+  inside a process that isn't PowerShell.
+- **C2 beaconing** — a process calling out to an external host on a regular,
+  low-jitter cadence.
+- **Credential theft** — access to LSASS memory, reflective dumpers, and
+  direct-to-Kerberos tools.
+- **Authentication attacks** — brute-force, password spraying, and Kerberoasting,
+  read from the Windows Security log.
+
+Because the detection is **behavioral and top-down**, there are no signatures to
+update and no allowlists to tune — it reasons from the causal chain. And it
+**fuses with Microsoft Defender**: pairing the AV's verdict ("what") with Argus's
+behavioral context ("how and from where") into one clear case.
+
 ## How it works
 
 ```
